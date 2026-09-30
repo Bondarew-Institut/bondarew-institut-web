@@ -1,96 +1,57 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bibliothek – Bondarev-Institut</title>
-<style>
-:root{--bg:#fbfbf9;--fg:#1c1f23;--mute:#5d6570;--line:#d5d8dc;--acc:#1f3a5f}
-@media (prefers-color-scheme:dark){:root{--bg:#16181b;--fg:#e4e6e8;--mute:#9aa2ab;--line:#33383e;--acc:#9bb6d9}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 Georgia,"Times New Roman",serif}
-main{max-width:52rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
-a{color:var(--acc)}
-nav{font:15px system-ui,sans-serif;margin-bottom:2.5rem}
-h1{font-size:1.6rem;font-weight:normal;margin:0 0 .25rem}
-.sub{color:var(--mute);font:15px system-ui,sans-serif;margin:0 0 1.75rem}
-.tools{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem;font:15px system-ui,sans-serif}
-input,select{font:inherit;padding:.45rem .6rem;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:2px}
-input{flex:1 1 14rem}
-input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li{padding:.9rem 0;border-bottom:1px solid var(--line)}
-.t{font-style:italic}
-.m{color:var(--mute);font:14px system-ui,sans-serif}
-#count,#msg{color:var(--mute);font:14px system-ui,sans-serif}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bondarew-Institut</title>
+  <style>
+    body {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      font-family: Georgia, serif;
+      line-height: 1.7;
+      color: #222;
+    }
+    h1, h2 {
+      line-height: 1.3;
+    }
+    h2 {
+      margin-top: 2em;
+    }
+  </style>
 </head>
 <body>
-<main>
-<nav><a href="../">Bondarev-Institut</a></nav>
-<h1>Bibliothek</h1>
-<p class="sub" id="count">Wird geladen …</p>
-<div class="tools">
-<input id="q" type="search" placeholder="Suchen nach Autor, Titel, Jahr" aria-label="Suche">
-<select id="s" aria-label="Sortierung">
-<option value="autor">Sortiert nach Autor</option>
-<option value="jahr-ab">Jahr, neueste zuerst</option>
-<option value="jahr-auf">Jahr, älteste zuerst</option>
-<option value="titel">Sortiert nach Titel</option>
-</select>
-</div>
-<p id="msg"></p>
-<ol id="liste"></ol>
-</main>
-<script>
-var daten=[];
-function autoren(e){
-  var a=e.author||e.editor||[];
-  return a.map(function(p){return p.literal||[p.family,p.given].filter(Boolean).join(", ")}).join("; ");
-}
-function jahr(e){
-  var d=e.issued&&e.issued["date-parts"];
-  return d&&d[0]&&d[0][0]?String(d[0][0]):"";
-}
-function zeile(e){
-  var t=e.title||"(ohne Titel)";
-  var teile=[e["container-title"],e.publisher,e["publisher-place"]].filter(Boolean).join(", ");
-  var li=document.createElement("li");
-  var a=document.createElement("div");a.className="m";
-  a.textContent=[autoren(e),jahr(e)].filter(Boolean).join(" · ")||"Ohne Autor";
-  var ti=document.createElement("div");ti.className="t";
-  if(e.URL){var l=document.createElement("a");l.href=e.URL;l.textContent=t;ti.appendChild(l)}else{ti.textContent=t}
-  var z=document.createElement("div");z.className="m";z.textContent=teile;
-  li.appendChild(a);li.appendChild(ti);if(teile)li.appendChild(z);
-  return li;
-}
-function zeigen(){
-  var q=document.getElementById("q").value.toLowerCase();
-  var s=document.getElementById("s").value;
-  var r=daten.filter(function(e){
-    return (autoren(e)+" "+(e.title||"")+" "+jahr(e)).toLowerCase().indexOf(q)>-1;
-  });
-  r.sort(function(a,b){
-    if(s==="jahr-ab")return (jahr(b)||"0").localeCompare(jahr(a)||"0");
-    if(s==="jahr-auf")return (jahr(a)||"9999").localeCompare(jahr(b)||"9999");
-    if(s==="titel")return (a.title||"").localeCompare(b.title||"","de");
-    return autoren(a).localeCompare(autoren(b),"de");
-  });
-  var ul=document.getElementById("liste");ul.innerHTML="";
-  r.forEach(function(e){ul.appendChild(zeile(e))});
-  document.getElementById("count").textContent=r.length+" von "+daten.length+" Einträgen";
-}
-fetch("bibliothek.json").then(function(x){
-  if(!x.ok)throw new Error(x.status);return x.json();
-}).then(function(j){
-  daten=Array.isArray(j)?j:(j.items||[]);
-  zeigen();
-}).catch(function(){
-  document.getElementById("count").textContent="";
-  document.getElementById("msg").textContent="Die Datei bibliothek.json wurde nicht gefunden. Sie muss im selben Ordner wie diese Seite liegen.";
-});
-document.getElementById("q").addEventListener("input",zeigen);
-document.getElementById("s").addEventListener("change",zeigen);
-</script>
+  <h1>Willkommen auf der digitalen Plattform des Bondarew-Instituts</h1>
+
+  <p>Das Bondarew-Institut widmet sich der langfristigen Bewahrung, wissenschaftlichen Erschließung und Bereitstellung des anthroposophischen Werkes von Gennadij Bondarew.</p>
+
+  <p>Da der Großteil seiner Schriften im regulären Buchhandel und über klassische Verlage beschränkt erhältlich ist, droht dieses vielschichtige Gesamtwerk in Vergessenheit zu geraten. Zwar wurden vor dem Schwellenübergang des Autors zahlreiche Schriften digitalisiert, jedoch fehlt es bislang an einer zentralen, nachhaltigen Struktur zur Sicherung und Vertretung.</p>
+
+  <p>Unser Ziel ist es, dieses kulturelle und anthroposophische Erbe vor dem Verlust zu bewahren und es für nachfolgende Generationen sowie die internationale Forschung dauerhaft zugänglich zu halten.</p>
+
+  <h2> Digitale Forschungsinfrastruktur</h2>
+
+  <p>Um den Textkorpus systematisch zu durchdringen und den aktuellen Forschungsstand im Sinne von Open Access frei zur Verfügung zu stellen, nutzt das Institut Werkzeuge der digitalen Technik:</p>
+
+  <p><strong>Trilinguale Quellen-Bibliografie (Zotero):</strong> Sämtliche Werke –  deutschsprachige und englischsprachige Titel sowie die russischen Originale  – sollen in einer strukturierten, dreisprachigen Literaturdatenbank erfasst werden.</p>
+
+  <p><strong>Kapitelweise Exzerpierung und Kommentierung (Obsidian):</strong> Die inhaltliche Durchdringung der Quellentexte soll über ein vernetztes digitales Wissensmanagement erfolgen. Jedes Kapitel soll schrittweise erschlossen, strukturiert analysiert und mit fortlaufenden Erläuterungen versehen werden.</p>
+
+  <p><strong>Transparente Online-Publikation (GitHub &amp; Quartz):</strong> Arbeitsstände, Kapitelkommentare und bibliografische Daten sollen schrittweise auf dieser Plattform veröffentlicht werden. Damit möchten wir eine transparente Arbeitsumgebung schaffen, die den Forschungsprozess in seinen Phasen nachvollziehbar macht.</p>
+
+  <p>Wir laden Wissenschaftler sowie alle interessierten Leser ein, das Werk von Bondarew neu zu entdecken und den Aufbau dieses Instituts zu begleiten.</p>
 </body>
+</html><!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bondarew-Institut</title>
+</head>
+<body>
+  <h1>Bondarew-Institut</h1>
+  <p>Forschungsseite des Bondarew-Instituts.</p>
+  <p>Diese Website befindet sich im Aufbau.</p>
+<p><a href="bibliothek.html">Zur Bibliothek</a></p></body>
 </html>
