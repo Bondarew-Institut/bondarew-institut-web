@@ -11,26 +11,32 @@
             margin: 0;
             padding: 0;
             display: flex;
-            height: 100vh;
-            background-color: #f4f4f4;
+            min-height: 100vh;
+            background-color: #f8f9fa;
             color: #333;
         }
 
         /* Sidebar (Linke Seite) */
         .sidebar {
-            width: 300px;
+            width: 280px;
             background-color: #2c3e50;
             color: #ecf0f1;
             padding: 20px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
             overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
 
         .sidebar h2 {
-            font-size: 1.2em;
+            font-size: 1.1em;
             border-bottom: 1px solid #34495e;
             padding-bottom: 10px;
             margin-top: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .sidebar ul {
@@ -39,93 +45,129 @@
         }
 
         .sidebar li {
-            margin: 5px 0;
-            cursor: pointer;
+            margin: 10px 0;
+            font-size: 0.95em;
         }
 
         .sidebar .folder {
             font-weight: bold;
-            margin-top: 15px;
-            display: block;
             color: #3498db;
         }
 
         .sidebar .sub-folder {
             padding-left: 20px;
-            font-size: 0.9em;
             color: #bdc3c7;
-        }
-
-        .sidebar .sub-folder:hover {
-            color: #fff;
         }
 
         /* Hauptbereich (Rechte Seite) */
         .main-content {
             flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            background-color: #fff;
+            padding: 40px 60px;
+            max-width: 1000px;
         }
 
         h1 {
             color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
             margin-top: 0;
         }
 
-        h2 {
-            color: #2c3e50;
-            margin-top: 40px;
-            border-left: 5px solid #3498db;
-            padding-left: 15px;
-        }
-
-        h3 {
-            color: #7f8c8d;
+        .intro-text {
             font-size: 1.1em;
-            margin-top: 25px;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
 
-        /* Tabellen Design */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        /* Kategorien (Aufklappbar) */
+        details {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #e1e4e8;
         }
 
-        th {
-            background-color: #3498db;
-            color: white;
-            text-align: left;
-            padding: 12px;
+        summary {
+            background-color: #fff;
+            padding: 20px;
+            font-size: 1.2em;
             font-weight: 600;
+            color: #2c3e50;
+            cursor: pointer;
+            list-style: none; /* Versteckt das Standard-Dreieck */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #3498db;
+            transition: background 0.2s;
         }
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+        summary:hover {
+            background-color: #f1f8ff;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        summary::after {
+            content: '➕'; /* Plus-Symbol */
+            font-size: 0.8em;
+            color: #3498db;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        details[open] summary::after {
+            content: '➖'; /* Minus-Symbol wenn offen */
         }
 
-        .tag {
-            display: inline-block;
-            background-color: #e74c3c;
-            color: white;
-            padding: 2px 6px;
+        details[open] summary {
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Listen innerhalb der Kategorien */
+        .book-list {
+            padding: 20px;
+            background-color: #fafbfc;
+        }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .book-item:last-child {
+            border-bottom: none;
+        }
+
+        .book-item:hover {
+            background-color: #f1f8ff;
+        }
+
+        .book-title {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .book-author {
+            font-size: 0.85em;
+            color: #666;
+            background-color: #e9ecef;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.7em;
-            margin-left: 10px;
-            vertical-align: middle;
+            white-space: nowrap;
+            margin-left: 20px;
+        }
+
+        /* Spezieller Stil für die Unterkategorien in Russisch */
+        .sub-category-title {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            color: #7f8c8d;
+            margin: 20px 0 10px 0;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
         }
 
         .footer {
@@ -142,138 +184,99 @@
 
     <!-- SIDEBAR: Die Struktur aus Zotero -->
     <div class="sidebar">
-        <h2>📚 Meine Bibliothek</h2>
+        <h2>📚 Navigation</h2>
         <ul>
-            <li>🕒 Kürzlich Gelesene</li>
+            <li>🏠 Startseite</li>
             <li class="folder">📂 Bondarew - Gesamtschau
                 <ul>
-                    <li class="sub-folder">📂 Aufsätze & Artikel
-                        <ul>
-                            <li class="sub-folder">📄 Arbeitsübersetzungen (Deutsch)</li>
-                            <li class="sub-folder">📄 Russisch (Originale)</li>
-                        </ul>
-                    </li>
-                    <li class="sub-folder">📂 Online & Foren
-                        <ul>
-                            <li class="sub-folder">📄 BDN-Forum</li>
-                        </ul>
-                    </li>
-                    <li class="sub-folder">📂 Primärliteratur
-                        <ul>
-                            <li class="sub-folder" style="color: #fff;">📄 Deutsch</li>
-                            <li class="sub-folder">📄 Englisch</li>
-                            <li class="sub-folder">📄 Russisch (Originale)</li>
-                        </ul>
-                    </li>
+                    <li class="sub-folder">Aufsätze & Artikel</li>
+                    <li class="sub-folder">Online & Foren</li>
+                    <li class="sub-folder">Primärliteratur</li>
                 </ul>
             </li>
-            <li>📗 Meine Publikationen</li>
-            <li>📙 Eintragsdupletten</li>
-            <li>📕 Einträge ohne Sammlung</li>
-            <li>🗑️ Papierkorb</li>
         </ul>
     </div>
 
-    <!-- HAUPTBEREICH: Die Listen -->
+    <!-- HAUPTBEREICH -->
     <div class="main-content">
         <h1>Forschungsprojekt: Bibliothek Bondarew</h1>
-        <p>Willkommen zur Dokumentation der Zotero-Bibliothek. Hier finden Sie die strukturierte Auflistung der Primär- und Sekundärliteratur.</p>
+        <p class="intro-text">
+            Willkommen zur Dokumentation der Zotero-Bibliothek. Diese Seite befindet sich im Aufbau. 
+            Hier werden die Werke und bibliografischen Angaben der Sammlung "Bondarew Gesamtschau" schrittweise ergänzt.
+        </p>
 
-        <!-- Sektion 1: Primärliteratur Deutsch (aus Bild 1) -->
-        <h2>Primärliteratur (Deutsch)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Ersteller</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Anthroposophie auf der Kreuzung der okkult-politischen Bewegu...</td><td>Bondarew</td></tr>
-                <tr><td>Das Gute und das Böse: das "unaussprechliche" Geheimnis des B...</td><td>Bondarew</td></tr>
-                <tr><td>Das Mysterium Anthroposophie</td><td>Bondarew</td></tr>
-                <tr><td>Der dreieinige Mensch des Leibes, der Seele und des Geistes im L...</td><td>Bondarew und ...</td></tr>
-                <tr><td>Der dreieinige Mensch des Leibes, der Seele und des Geistes im L...</td><td>Bondarew</td></tr>
-                <tr><td>Der dreieinige Mensch des Leibes, der Seele und des Geistes im L...</td><td>Bondarew</td></tr>
-                <tr><td>Der dreieinige Mensch des Leibes, der Seele und des Geistes im L...</td><td>Bondarew</td></tr>
-                <tr><td>Der Erzengel Michael und die Michaeliten. 1: Methodischer Aspekt</td><td>Bondarew</td></tr>
-                <tr><td>Der Impuls der Anthroposophie zwischen Gut und Böse</td><td>Bondarew</td></tr>
-                <tr><td>Die "Philosophie der Freiheit" von Rudolf Steiner als Grundlage d...</td><td>Bondarew und ...</td></tr>
-                <tr><td>Die wartende Kultur</td><td>Bondarew</td></tr>
-                <tr><td>Die Weihnachtstagung in geänderter Zeitlage</td><td>Bondarew</td></tr>
-                <tr><td>Die Welt und Menschheit auf der Kreuzung der okkult-politische...</td><td>Bondarew</td></tr>
-                <tr><td>Makrokosmos und Mikrokosmos</td><td>Bondarew</td></tr>
-                <tr><td>Stimme aus dem Osten</td><td>Bondarew</td></tr>
-                <tr><td>"Und werdet die Wahrheit erkennen..." 3. Teil der sozial-politisch-...</td><td>Bondarew</td></tr>
-            </tbody>
-        </table>
+        <!-- Kategorie 1: Deutsch -->
+        <details open>
+            <summary>Primärliteratur (Deutsch)</summary>
+            <div class="book-list">
+                <div class="book-item"><span class="book-title">Anthroposophie auf der Kreuzung der okkult-politischen Bewegung</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Das Gute und das Böse: das "unaussprechliche" Geheimnis</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Das Mysterium Anthroposophie</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Der dreieinige Mensch des Leibes, der Seele und des Geistes</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Der Erzengel Michael und die Michaeliten. 1: Methodischer Aspekt</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Der Impuls der Anthroposophie zwischen Gut und Böse</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Die "Philosophie der Freiheit" von Rudolf Steiner</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Die wartende Kultur</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Die Weihnachtstagung in geänderter Zeitlage</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Die Welt und Menschheit auf der Kreuzung</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Makrokosmos und Mikrokosmos</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">Stimme aus dem Osten</span><span class="book-author">Bondarew</span></div>
+                <div class="book-item"><span class="book-title">"Und werdet die Wahrheit erkennen..." 3. Teil</span><span class="book-author">Bondarew</span></div>
+            </div>
+        </details>
 
-        <!-- Sektion 2: Primärliteratur Englisch (aus Bild 2) -->
-        <h2>Primärliteratur (Englisch)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Ersteller</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Events in the Ukraine and a Possible Future Scenario - Volume I</td><td>Bondarev</td></tr>
-                <tr><td>Events in the Ukraine and a Possible Future Scenario - Volume II</td><td>Bondarev</td></tr>
-                <tr><td>Events in the Ukraine and a Possible Future Scenario - Volume III</td><td>Bondarev</td></tr>
-                <tr><td>G. A. Bondarev - Rudolf Steiner's 'Philosophie der Freiheit' As the...</td><td>Bondarev</td></tr>
-                <tr><td>Macrocosm and Microcosm</td><td>Bondarev</td></tr>
-                <tr><td>Rudolf Steiner's 'Philosophie der Freiheit' As Foundation of the L...</td><td>Bondarev</td></tr>
-                <tr><td>Rudolf steiner's 'philosophie der freiheit' as the foundation of th...</td><td>Bondarev</td></tr>
-                <tr><td>The Christmas Conference in the Changed Condition of the Times</td><td>Bondarev</td></tr>
-            </tbody>
-        </table>
+        <!-- Kategorie 2: Englisch -->
+        <details>
+            <summary>Primärliteratur (Englisch)</summary>
+            <div class="book-list">
+                <div class="book-item"><span class="book-title">Events in the Ukraine and a Possible Future Scenario - Volume I</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">Events in the Ukraine and a Possible Future Scenario - Volume II</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">Events in the Ukraine and a Possible Future Scenario - Volume III</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">G. A. Bondarev - Rudolf Steiner's 'Philosophie der Freiheit'</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">Macrocosm and Microcosm</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">Rudolf Steiner's 'Philosophie der Freiheit' As Foundation</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">The Christmas Conference in the Changed Condition</span><span class="book-author">Bondarev</span></div>
+            </div>
+        </details>
 
-        <!-- Sektion 3: Russisch (Originale) (aus Bild 3 & 4) -->
-        <h2>Russisch (Originale)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Ersteller / Typ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Bild 3 -->
-                <tr><td>(1Auflage)Anthropos_reduced</td><td>PDF</td></tr>
-                <tr><td>2 Aufl.Anthropos.Bd1TOM1-1</td><td>PDF</td></tr>
-                <tr><td>2 Aufl.Anthropos.Bd1TOM1-1</td><td>PDF</td></tr>
-                <tr><td>2 aufl.Anthropos.Bd2TOM2-1</td><td>PDF</td></tr>
-                <tr><td>(Der dreieinige Mensch)Триед-челов</td><td>PDF</td></tr>
-                <tr><td>( Der Impuls der Antr. zw. Gut und Böse)Импульс-Антропософии...</td><td>PDF</td></tr>
-                <tr><td>Die heilige SchriftCa.nic</td><td>PDF</td></tr>
-                <tr><td>(Die wartende K. Bd.2O.культ.Part2_</td><td>PDF</td></tr>
-                <tr><td>(Die Weihnachtstagung)PC.рус</td><td>PDF</td></tr>
-                <tr><td>EpilogЭпилог</td><td>PDF</td></tr>
-                <tr><td>EreignisseEuropaundmöglichesSzenarioKn.для-сайта-07.02.sm_</td><td>PDF</td></tr>
-                <tr><td>MM1_web_rus</td><td>PDF</td></tr>
-                <tr><td>(Organon)Opr.рус</td><td>PDF</td></tr>
-                <tr><td>Ozhidaüščaâ kul'tura: ézoteričeskie očerki russkoj istorii i k...</td><td>Bondarev</td></tr>
-                <tr><td>(Und werdet die Wahrheit erkennen)И-познаете-Истину...7.3.2020</td><td>PDF</td></tr>
-                <tr><td>MM2(russisch)</td><td>PDF</td></tr>
-                <tr><td>mm3.pycussisch</td><td>PDF</td></tr>
+        <!-- Kategorie 3: Russisch -->
+        <details>
+            <summary>Russisch (Originale)</summary>
+            <div class="book-list">
                 
-                <!-- Bild 4 (Aufsätze & Artikel) -->
-                <tr><td>Article-2-Г.А-Бондарев</td><td>PDF</td></tr>
-                <tr><td>HS-5</td><td>PDF</td></tr>
-                <tr><td>HS-6</td><td>PDF</td></tr>
-                <tr><td>HS.</td><td>PDF</td></tr>
-                <tr><td>SS-2</td><td>PDF</td></tr>
-                <tr><td>ss-3</td><td>PDF</td></tr>
-                <tr><td>SS-4</td><td>PDF</td></tr>
-                <tr><td>SS-5</td><td>PDF</td></tr>
-                <tr><td>Бр.1</td><td>PDF</td></tr>
-                <tr><td>Бр.2.с-Англ</td><td>PDF</td></tr>
-                <tr><td>Бр.3-Рус.</td><td>PDF</td></tr>
-                <tr><td>Тайны-эзотериа</td><td>PDF</td></tr>
-                <tr><td>Так-Г.А.-Бондарев</td><td>PDF</td></tr>
-            </tbody>
-        </table>
+                <div class="sub-category-title">Bücher & Gesamtausgaben</div>
+                <div class="book-item"><span class="book-title">(1Auflage) Anthropos_reduced</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">2 Aufl. Anthropos. Bd1TOM1-1</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">2 aufl. Anthropos. Bd2TOM2-1</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">(Der dreieinige Mensch) Триед-челов</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">(Der Impuls der Antr. zw. Gut und Böse)</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Die heilige Schrift Ca.nic</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">(Die wartende K. Bd.2O.культ.Part2_</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">(Die Weihnachtstagung) PC.рус</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Epilog Эпилог</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Ereignisse Europa und mögliches Szenario</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Ozhidaüščaâ kul'tura: ézoteričeskie očerki</span><span class="book-author">Bondarev</span></div>
+                <div class="book-item"><span class="book-title">(Und werdet die Wahrheit erkennen) И-познаете-Истину</span><span class="book-author">PDF</span></div>
+
+                <div class="sub-category-title">Aufsätze & Artikel (HS, SS, MM)</div>
+                <div class="book-item"><span class="book-title">Article-2-Г.А-Бондарев</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">HS-5</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">HS-6</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">HS.</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">SS-2</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">ss-3</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">SS-4</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">SS-5</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Бр.1</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Бр.2.с-Англ</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Бр.3-Рус.</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Тайны-эзотериа</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">Так-Г.А.-Бондарев</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">MM1_web_rus</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">MM2(russisch)</span><span class="book-author">PDF</span></div>
+                <div class="book-item"><span class="book-title">mm3.pycussisch</span><span class="book-author">PDF</span></div>
+            </div>
+        </details>
 
         <div class="footer">
             Dokumentation erstellt für das Forschungsprojekt Bondarew. Daten basieren auf der Zotero-Bibliothek.
